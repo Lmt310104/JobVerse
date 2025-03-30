@@ -151,7 +151,27 @@
     .email-item:hover {
       background: #f8f9fa;
     }
-    .chat-container { display: flex; height: 500px; width: 800px; }
+    .chat-container { 
+      display: flex; 
+      height: 600px; /* Increased height */
+      width: 800px; 
+    }
+    .chat-messages { 
+      flex: 1; 
+      padding: 25px; 
+      overflow-y: auto; 
+      background: #f0f2f5;
+      height: calc(100% - 60px); /* Subtract header height */
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-area { 
+      flex: 1; 
+      display: flex; 
+      flex-direction: column;
+      height: 100%; /* Make sure it takes full height */
+      overflow: hidden; /* Prevent double scrollbars */
+    }
     .chat-sidebar { width: 250px; background: #00166c; color: white; padding: 20px; border-right: 2px solid #09e1ac; }
     .contact-list { list-style: none; margin-top: 20px; }
     .contact-item { display: flex; align-items: center; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: pointer; transition: all 0.3s; background: rgba(9,225,172,0.1); }
@@ -336,7 +356,7 @@
               <button class="window-btn max-btn"></button>
             </div>
           </div>
-          <div class="container">
+          <div class="container chat-container">
             <!-- Sidebar -->
             <div class="sidebar">
               <h2>Danh bạ</h2>
@@ -356,7 +376,7 @@
               <div class="chat-header">
                 <h2>Chat với <span id="current-contact">John Doe</span></h2>
               </div>
-              <div class="chat-messages" id="chatMessages">
+              <div class="chat-messages" id="chatMessages" >
                 <div class="message">
                   <div class="message-content">
                     Xin chào! Bạn có khoẻ không?
@@ -536,7 +556,8 @@
         }
       }
     }
-    function sendMessage() {
+    let messageHistory = [];
+    async function sendMessage() {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       const chatMessages = document.getElementById('chatMessages');
@@ -569,6 +590,43 @@
         `;
         chatMessages.appendChild(newMessage);
         input.value = '';
+        messageHistory.push({
+          role: "user",
+          content: message,
+        });
+        try {
+          const response = await fetch("https://llm-rag-chatbot-owav.onrender.com/api/v1/rag/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              messages: messageHistory,
+            }),
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          // Add assistant's response to history
+          messageHistory.push({
+            role: "assistant",
+            content: data,
+          });
+          const newAssistantMessage = document.createElement('div');
+          newAssistantMessage.className = 'message';
+          newAssistantMessage.innerHTML = `
+            <div class="message-content">
+              ${data.replace(/\n/g, '<br>')}
+              <div class="message-info">JohnDoe - ${getCurrentTime()}</div>
+            </div>
+          `;
+          chatMessages.appendChild(newAssistantMessage);
+        } catch (error) {
+          console.error("Chat error:", error);
+        }
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
@@ -582,6 +640,9 @@
         sendMessage();
       }
     }
+     // Add this at the top with other state variables
+      // Add user message to history
+    
     function getFileIcon(file) {
       const type = file.type;
       let icon = 'fa-file';
