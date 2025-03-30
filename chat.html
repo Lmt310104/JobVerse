@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giao diện 2 cột - Dropdown Intro</title>
+  <!-- Sử dụng Tailwind CSS nếu cần cho phần tasks -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Reset CSS */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    /* Container chia 2 cột */
+    .split-screen {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .left-column {
+      width: 20%;
+      background: #f4f4f4;
+      padding: 20px;
+      overflow-y: auto;
+      border-right: 1px solid #ddd;
+    }
+    .right-column {
+      width: 80%;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Intro Content: nền trắng */
+    #introContent {
+      display: none;
+      background: #fff;
+      height: 100%;
+      padding: 40px;
+      overflow-y: auto;
+      position: relative;
+    }
+    /* Dropdown menu (hoặc tab) cho intro */
+    .intro-menu {
+      margin-bottom: 20px;
+    }
+    .intro-menu select {
+      padding: 8px 12px;
+      font-size: 16px;
+    }
+    .intro-text {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    /* Nút Next ở góc phải dưới */
+    .next-btn {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      padding: 8px 16px;
+      background: #00166c;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* Desktop Ứng Dụng (nền xanh) */
+    #desktopContent {
+      display: block;
+      background: #00166c;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Taskbar trong Desktop */
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 20%; /* bắt đầu từ cột bên phải */
+      right: 0;
+      background: rgba(0, 22, 108, 0.9);
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 15px;
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+    }
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #09e1ac;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .app-icon:hover {
+      transform: scale(1.1);
+    }
+    .window {
+      position: absolute;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 22, 108, 0.2);
+      min-width: 400px;
+      display: none;
+    }
+    .window.active {
+      display: block;
+    }
+    .window-header {
+      padding: 12px 15px;
+      background: #00166c;
+      color: white;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: move;
+    }
+    .window-controls {
+      display: flex;
+      gap: 10px;
+    }
+    .window-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+    .close-btn { background: #ff5f57; }
+    .min-btn { background: #febc2e; }
+    .max-btn { background: #28c940; }
+    /* Các style khác của Desktop (chat, email, …) giữ nguyên như code cũ */
+    .email-list {
+      list-style: none;
+      padding: 20px;
+    }
+    .email-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .email-item:hover {
+      background: #f8f9fa;
+    }
+    .chat-container { display: flex; height: 500px; width: 800px; }
+    .chat-sidebar { width: 250px; background: #00166c; color: white; padding: 20px; border-right: 2px solid #09e1ac; }
+    .contact-list { list-style: none; margin-top: 20px; }
+    .contact-item { display: flex; align-items: center; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: pointer; transition: all 0.3s; background: rgba(9,225,172,0.1); }
+    .contact-item.active { background: #09e1ac; color: #00166c; }
+    .avatar { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; border: 2px solid #09e1ac; object-fit: cover; }
+    .chat-area { flex: 1; display: flex; flex-direction: column; }
+    .chat-messages { flex: 1; padding: 25px; overflow-y: auto; background: #f0f2f5; }
+    .message { margin-bottom: 20px; max-width: 75%; display: flex; flex-direction: column; }
+    .message.you { margin-left: auto; align-items: flex-end; }
+    .message-content { padding: 15px 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,22,108,0.1); }
+    .message.you .message-content { background: #09e1ac; color: #00166c; }
+    .input-area { padding: 20px; background: white; border-top: 2px solid #09e1ac; display: flex; gap: 15px; align-items: center; }
+    textarea { flex: 1; padding: 15px; border: 2px solid #00166c; border-radius: 15px; resize: none; min-height: 50px; }
+    button { background: #00166c; color: white; border: none; padding: 12px 30px; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
+    button:hover { background: #09e1ac; color: #00166c; }
+  </style>
+</head>
+<body>
+  <div class="split-screen">
+    <!-- Cột bên trái: Giao diện tasks -->
+    <div class="left-column">
+      <div data-tab-content="tasks">
+        <div class="grid grid-cols-12 gap-6 md:gap-10 relative">
+          <aside class="col-span-12">
+            <nav id="task-navigation" class="relative">
+              <ol class="relative z-10">
+                <!-- Khi click vào task "Intro & Scenario" sẽ chuyển giao diện bên phải sang chế độ Intro -->
+                <li data-task-id="intro" class="task-item relative flex items-start pb-8 group active">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Intro & Scenario</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">5 min</span>
+                    </div>
+                  </div>
+                </li>
+                <!-- Các task khác hiển thị giao diện Desktop -->
+                <li data-task-id="1" class="task-item relative flex items-start pb-8 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Financial Statement Analysis</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">45 min</span>
+                    </div>
+                  </div>
+                </li>
+                <li data-task-id="2" class="task-item relative flex items-start pb-8 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Financial Ratio Calculation</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">60 min</span>
+                    </div>
+                  </div>
+                </li>
+                <li data-task-id="3" class="task-item relative flex items-start pb-8 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Trend and Risk Identification</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">40 min</span>
+                    </div>
+                  </div>
+                </li>
+                <li data-task-id="4" class="task-item relative flex items-start pb-8 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Competitor Benchmarking</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">50 min</span>
+                    </div>
+                  </div>
+                </li>
+                <li data-task-id="5" class="task-item relative flex items-start pb-8 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Financial Report Preparation</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">75 min</span>
+                    </div>
+                  </div>
+                </li>
+                <li data-task-id="finish" class="task-item relative flex items-start pb-0 group">
+                  <div class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"></div>
+                  <div class="task-details ml-10 cursor-pointer">
+                    <h4 class="task-title font-medium text-sm leading-tight">Finish Line</h4>
+                    <div class="task-meta flex items-center text-xs text-muted-foreground mt-0.5">
+                      <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span class="task-time">15 min</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </nav>
+          </aside>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Cột bên phải: chứa 2 container: introContent & desktopContent -->
+    <div class="right-column">
+      <!-- Intro Content (nền trắng với dropdown và nội dung thay đổi) -->
+      <div id="introContent">
+        <!-- Menu chọn nội dung -->
+        <div class="intro-menu">
+          <select id="introSelect">
+            <option value="company">About your company</option>
+            <option value="market">About the market</option>
+            <option value="team">About your team</option>
+            <option value="situation">About the situation</option>
+          </select>
+        </div>
+        <!-- Nội dung hiển thị -->
+        <div id="introText" class="intro-text"></div>
+        <!-- Nút Next nếu có trang tiếp theo -->
+        <button id="nextBtn" class="next-btn" style="display: none;">Next</button>
+      </div>
+      
+      <!-- Desktop Content (giao diện Desktop Ứng Dụng) -->
+      <div id="desktopContent">
+        <!-- Taskbar -->
+        <div class="taskbar">
+          <div class="app-icon" onclick="openApp('email')">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="app-icon" onclick="openApp('messenger')">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+        </div>
+        <!-- Email Window -->
+        <div class="window" id="emailWindow">
+          <div class="window-header">
+            <span>Thư Điện Tử</span>
+            <div class="window-controls">
+              <button class="window-btn close-btn" onclick="closeWindow('email')"></button>
+              <button class="window-btn min-btn"></button>
+              <button class="window-btn max-btn"></button>
+            </div>
+          </div>
+          <div class="window-content">
+            <ul class="email-list">
+              <li class="email-item">Thư mới từ Google</li>
+              <li class="email-item">Khuyến mãi Amazon Prime</li>
+              <li class="email-item">Thông báo hệ thống</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Messenger Window -->
+        <div class="window" id="messengerWindow">
+          <div class="window-header">
+            <span>Tin Nhắn</span>
+            <div class="window-controls">
+              <button class="window-btn close-btn" onclick="closeWindow('messenger')"></button>
+              <button class="window-btn min-btn"></button>
+              <button class="window-btn max-btn"></button>
+            </div>
+          </div>
+          <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+              <h2>Danh bạ</h2>
+              <ul class="contact-list">
+                <li class="contact-item active" data-contact="john" onclick="selectContact(this)">
+                  <img src="https://i.pravatar.cc/40?img=1" class="avatar" alt="John Doe">
+                  John Doe
+                </li>
+                <li class="contact-item" data-contact="jane" onclick="selectContact(this)">
+                  <img src="https://i.pravatar.cc/40?img=2" class="avatar" alt="Jane Smith">
+                  Jane Smith
+                </li>
+              </ul>
+            </div>
+            <!-- Chat area -->
+            <div class="chat-area">
+              <div class="chat-header">
+                <h2>Chat với <span id="current-contact">John Doe</span></h2>
+              </div>
+              <div class="chat-messages" id="chatMessages">
+                <div class="message">
+                  <div class="message-content">
+                    Xin chào! Bạn có khoẻ không?
+                    <div class="message-info">John Doe - 10:00 AM</div>
+                  </div>
+                </div>
+                <div class="message you">
+                  <div class="message-content">
+                    Tôi khoẻ, cảm ơn bạn!
+                    <div class="message-info">Bạn - 10:02 AM</div>
+                  </div>
+                </div>
+                <div class="message">
+                  <div class="message-content">
+                    <a href="#" class="file-message">
+                      <i class="fas fa-file-pdf file-icon" style="color: #e74c3c;"></i>
+                      <div>
+                        <div class="file-name">bao-cao.pdf</div>
+                        <div class="message-info">John Doe - 10:05 AM</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="input-area">
+                <div class="file-input-container">
+                  <label class="file-label">
+                    <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx" onchange="handleFileSelect(event)">
+                    <i class="fas fa-paperclip"></i>
+                  </label>
+                </div>
+                <textarea id="messageInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)"></textarea>
+                <button onclick="sendMessage()">Gửi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- #desktopContent -->
+    </div>
+  </div>
+  
+  <!-- Script xử lý chuyển đổi nội dung dựa trên task được click -->
+  <script>
+    // Lấy danh sách các task-item bên cột trái
+    const taskItems = document.querySelectorAll('.left-column .task-item');
+    function handleTaskClick(e) {
+      // Xóa active của tất cả task-item
+      taskItems.forEach(item => item.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      // Lấy data-task-id
+      const taskId = e.currentTarget.getAttribute('data-task-id');
+      if(taskId === 'intro') {
+        // Nếu click Intro & Scenario: hiển thị introContent và ẩn desktopContent
+        document.getElementById('introContent').style.display = 'block';
+        document.getElementById('desktopContent').style.display = 'none';
+        // Khởi tạo intro với lựa chọn mặc định là "About your company"
+        currentSection = 'company';
+        currentPage = 0;
+        document.getElementById('introSelect').value = 'company';
+        updateIntroContent();
+      } else {
+        // Các task khác: hiển thị desktopContent, ẩn introContent
+        document.getElementById('introContent').style.display = 'none';
+        document.getElementById('desktopContent').style.display = 'block';
+      }
+    }
+    taskItems.forEach(item => {
+      item.addEventListener('click', handleTaskClick);
+    });
+  </script>
+  
+  <!-- Script cho Intro Content -->
+  <script>
+    // Dữ liệu cho từng mục intro
+    const introData = {
+      company: [
+        {
+          title: "About your company",
+          text: "X is a world-renowned investment bank known for providing financial advisory services, asset management, and capital market solutions. The firm has a strong reputation for its analytical expertise and innovative financial strategies."
+        }
+      ],
+      market: [
+        {
+          title: "Market Overview",
+          text: "The financial services industry handles money worldwide, and investment banking is a big part of it. Investment banks help companies raise cash, buy other businesses, or plan smart moves. The whole industry covers banks, insurance, stock markets, and tech apps, powering economies everywhere."
+        },
+        {
+          title: "Market Size and Growth",
+          text: "Financial Services: Worth $30.9 trillion in 2023, expected to grow to $37.5 trillion by 2027 (7.5% yearly growth, DashDevs).<br><br>Investment Banking: Its tech side is $165.91 billion in 2025, set to hit $307.43 billion by 2030 (13.13% growth, Mordor Intelligence)."
+        },
+        {
+          title: "Top Players",
+          text: "JPMorgan Chase (U.S.) - Market cap ~$600 billion.<br>Berkshire Hathaway (U.S.) - Huge in insurance.<br>Goldman Sachs (U.S.) - Tops in deals.<br>Morgan Stanley (U.S.) - Strong in wealth."
+        }
+      ],
+      team: [
+        {
+          title: "About your team",
+          text: "Your team at X<br>A dynamic group at X specializing in financial analysis and corporate finance strategies to deliver data-driven insights and innovative solutions for investment decisions.<br><br>ROLE & SCOPE OF WORK<br>Manager - Finance Manager: Lead and oversee financial analysis, reporting, and budgeting; ensure accurate financial modeling, forecasting; collaborate with cross-functional teams to provide financial insights.<br>Teamleader - Senior Financial Analyst: Lead and coordinate a team of analysts in preparing financial reports; ensure timely and accurate financial reporting; assist in the development of financial models and forecasts.<br>You/Your peer - Financial Analyst: Assist in the preparation of financial reports and forecasts; perform data analysis and create financial models under the guidance of senior analysts; help in compiling financial data and preparing presentations."
+        }
+      ],
+      situation: [
+        {
+          title: "About the situation",
+          text: "Your team is tasked with evaluating the financial performance of a publicly traded company to determine its potential for future growth and profitability. Your analysis will guide important investment decisions and support client advisory services."
+        }
+      ]
+    };
+    // Biến theo dõi mục và trang hiện tại
+    let currentSection = 'company';
+    let currentPage = 0;
+    // Hàm cập nhật nội dung Intro
+    function updateIntroContent() {
+      const data = introData[currentSection];
+      const contentObj = data[currentPage];
+      const introTextDiv = document.getElementById('introText');
+      introTextDiv.innerHTML = `<h1>${contentObj.title}</h1><p>${contentObj.text}</p>`;
+      // Hiển thị nút Next nếu còn trang tiếp theo
+      if(currentPage < data.length - 1) {
+        document.getElementById('nextBtn').style.display = 'block';
+      } else {
+        document.getElementById('nextBtn').style.display = 'none';
+      }
+    }
+    // Khi thay đổi lựa chọn trong dropdown
+    document.getElementById('introSelect').addEventListener('change', function() {
+      currentSection = this.value;
+      currentPage = 0;
+      updateIntroContent();
+    });
+    // Nút Next chuyển sang trang tiếp theo trong cùng mục
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      const data = introData[currentSection];
+      if(currentPage < data.length - 1) {
+        currentPage++;
+        updateIntroContent();
+      }
+    });
+    // Khởi tạo nội dung Intro với lựa chọn mặc định
+    updateIntroContent();
+  </script>
+  
+  <!-- Các script của Desktop Ứng Dụng (giữ nguyên code Desktop như cũ) -->
+  <script>
+    let currentContact = 'john';
+    let currentFile = null;
+    function selectContact(element) {
+      document.querySelectorAll('.contact-item').forEach(item => item.classList.remove('active'));
+      element.classList.add('active');
+      currentContact = element.dataset.contact;
+      document.getElementById('current-contact').textContent = element.textContent.trim();
+      document.getElementById('chatMessages').innerHTML = `
+        <div class="message">
+          <div class="message-content">
+            Bắt đầu cuộc trò chuyện với ${element.textContent.trim()}
+            <div class="message-info">Hệ thống - ${getCurrentTime()}</div>
+          </div>
+        </div>
+      `;
+    }
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const allowedTypes = [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+        if (!allowedTypes.includes(file.type)) {
+          alert('Chỉ chấp nhận file PDF, Word và Excel!');
+          currentFile = null;
+          event.target.value = '';
+        } else {
+          currentFile = file;
+        }
+      }
+    }
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      const chatMessages = document.getElementById('chatMessages');
+      if (currentFile) {
+        const newFileMessage = document.createElement('div');
+        newFileMessage.className = 'message you';
+        newFileMessage.innerHTML = `
+          <div class="message-content">
+            <div class="file-message">
+              ${getFileIcon(currentFile)}
+              <div>
+                <div class="file-name">${currentFile.name}</div>
+                <div class="message-info">Bạn - ${getCurrentTime()}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        chatMessages.appendChild(newFileMessage);
+        currentFile = null;
+        document.getElementById('fileInput').value = '';
+      }
+      if (message) {
+        const newMessage = document.createElement('div');
+        newMessage.className = 'message you';
+        newMessage.innerHTML = `
+          <div class="message-content">
+            ${message.replace(/\n/g, '<br>')}
+            <div class="message-info">Bạn - ${getCurrentTime()}</div>
+          </div>
+        `;
+        chatMessages.appendChild(newMessage);
+        input.value = '';
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    function getCurrentTime() {
+      const now = new Date();
+      return now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    }
+    function handleEnter(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+    function getFileIcon(file) {
+      const type = file.type;
+      let icon = 'fa-file';
+      let color = '#666';
+      if (type.includes('pdf')) {
+        icon = 'fa-file-pdf';
+        color = '#e74c3c';
+      } else if (type.includes('word')) {
+        icon = 'fa-file-word';
+        color = '#2c3e50';
+      } else if (type.includes('excel')) {
+        icon = 'fa-file-excel';
+        color = '#27ae60';
+      }
+      return `<i class="fas ${icon} file-icon" style="color: ${color};"></i>`;
+    }
+  </script>
+  <script>
+    let activeWindows = [];
+    let currentDraggedWindow = null;
+    let offset = [0, 0];
+    function openApp(appType) {
+      const windowId = appType + 'Window';
+      const win = document.getElementById(windowId);
+      document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+      win.classList.add('active');
+      win.style.top = '50px';
+      win.style.left = '50px';
+      activeWindows = activeWindows.filter(id => id !== windowId);
+      activeWindows.unshift(windowId);
+      updateWindowStack();
+    }
+    function closeWindow(appType) {
+      const win = document.getElementById(appType + 'Window');
+      win.classList.remove('active');
+      activeWindows = activeWindows.filter(id => id !== appType + 'Window');
+    }
+    function updateWindowStack() {
+      activeWindows.forEach((id, index) => {
+        document.getElementById(id).style.zIndex = index + 2;
+      });
+    }
+    document.querySelectorAll('.window-header').forEach(header => {
+      header.addEventListener('mousedown', startDrag);
+    });
+    function startDrag(e) {
+      currentDraggedWindow = e.target.closest('.window');
+      const rect = currentDraggedWindow.getBoundingClientRect();
+      offset = [e.clientX - rect.left, e.clientY - rect.top];
+      activeWindows = activeWindows.filter(id => id !== currentDraggedWindow.id);
+      activeWindows.unshift(currentDraggedWindow.id);
+      updateWindowStack();
+      document.addEventListener('mousemove', dragWindow);
+      document.addEventListener('mouseup', stopDrag);
+    }
+    function dragWindow(e) {
+      if (!currentDraggedWindow) return;
+      currentDraggedWindow.style.left = (e.clientX - offset[0]) + 'px';
+      currentDraggedWindow.style.top = (e.clientY - offset[1]) + 'px';
+    }
+    function stopDrag() {
+      currentDraggedWindow = null;
+      document.removeEventListener('mousemove', dragWindow);
+      document.removeEventListener('mouseup', stopDrag);
+    }
+  </script>
+</body>
+</html>

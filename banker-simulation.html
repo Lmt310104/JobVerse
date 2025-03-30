@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banker | JobVerse Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--color-background)",
+              "secondary-background": "var(--color-secondary-background)",
+              "hero-background": "var(--color-hero-background)",
+              text: "var(--color-text)",
+              "muted-foreground": "var(--color-muted-foreground)",
+              primary: "var(--color-primary)",
+              "primary-foreground": "var(--color-primary-foreground)",
+              "secondary-gradient": "var(--color-secondary-gradient)",
+              verse: "var(--color-primary)",
+              border: "var(--color-border)",
+              "card-background": "var(--color-card-background)",
+              "card-border": "var(--color-card-border)",
+              "footer-background": "var(--color-footer-background)",
+              "node-completed-bg": "var(--color-node-completed-bg)",
+              "node-disabled-border": "var(--color-node-disabled-border)",
+              "node-disabled-bg": "var(--color-node-disabled-bg)",
+              "node-disabled-text": "var(--color-node-disabled-text)",
+              "line-completed-color": "var(--color-line-completed-color)",
+              "success-bg": "var(--color-success-bg)",
+              "success-text": "var(--color-success-text)",
+              "success-light-bg": "var(--color-success-light-bg)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .tab-button {
+        border-bottom-width: 2px;
+        transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      }
+      .tab-button:not(.active) {
+        color: var(--color-muted-foreground);
+        border-bottom-color: transparent;
+        font-weight: 500;
+      }
+      .tab-button:not(.active):hover {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-border);
+      }
+      .tab-button.active {
+        border-bottom-color: var(--color-primary);
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="bg-background text-text flex flex-col min-h-screen">
+    <header
+      class="sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm border-b border-border"
+    >
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="text-2xl font-bold">
+              <span class="text-secondary-gradient">Job</span
+              ><span class="text-verse">Verse</span>
+            </a>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="relative ml-3">
+              <button
+                type="button"
+                class="flex text-sm bg-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                id="user-menu-button-sim"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <span class="sr-only">Open user menu</span>
+                <svg
+                  class="h-8 w-8 rounded-full text-gray-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+              </button>
+              <div
+                id="user-menu-sim"
+                class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-menu-button-sim"
+                tabindex="-1"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                  tabindex="-1"
+                  >Your Profile</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                  tabindex="-1"
+                  >Settings</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                  tabindex="-1"
+                  >Sign out</a
+                >
+              </div>
+            </div>
+            <button
+              id="mobile-menu-button-sim"
+              aria-label="Open menu"
+              aria-expanded="false"
+              class="md:hidden p-2 text-muted-foreground hover:text-primary rounded focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div
+        class="md:hidden hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-sm shadow-md border-t border-border z-40"
+        id="mobile-menu-sim"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >My Account</a
+          >
+          <a
+            href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >Sign Out</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow">
+      <section class="bg-hero-background border-b border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <div
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+          >
+            <div>
+              <h1 class="text-2xl md:text-3xl font-bold text-primary mb-1">
+                Banker
+              </h1>
+              <p class="text-muted-foreground max-w-2xl">
+                Step into the shoes of a banker, analyze financial data, and
+                make informed decisions in this interactive simulation course.
+              </p>
+              <div
+                id="completion-message"
+                class="hidden mt-3 px-4 py-2 bg-success-light-bg text-success-text rounded-md text-sm font-medium inline-flex items-center"
+              >
+                <svg
+                  class="w-4 h-4 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Course Completed!
+              </div>
+            </div>
+            <button
+              id="start-simulation-btn"
+              class="px-6 py-2.5 text-base font-medium text-primary-foreground bg-primary rounded-md button-hover-effect whitespace-nowrap mt-4 md:mt-0"
+            >
+              Start Simulation
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="border-b border-border sticky top-16 bg-background z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex space-x-6 md:space-x-8 -mb-px" id="tab-buttons">
+            <button data-tab="overview" class="tab-button py-3 px-1 text-sm">
+              Overview
+            </button>
+            <button data-tab="about" class="tab-button py-3 px-1 text-sm">
+              About Us
+            </button>
+            <button
+              data-tab="tasks"
+              class="tab-button active py-3 px-1 text-sm"
+            >
+              Tasks
+            </button>
+            <button data-tab="reviews" class="tab-button py-3 px-1 text-sm">
+              Reviews
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex-grow"
+      >
+        <div id="tab-content">
+          <div data-tab-content="overview" class="hidden prose max-w-none">
+            <h2 class="text-xl md:text-2xl font-bold text-primary mb-4">
+              Course Overview
+            </h2>
+            <p>
+              This interactive simulation places you in the role of a junior
+              financial analyst tasked with evaluating a potential investment.
+              You will work through a series of modules designed to build
+              practical skills in financial analysis.
+            </p>
+            <h4>Learning Objectives:</h4>
+            <ul>
+              <li>Understand and interpret key financial statements.</li>
+              <li>Calculate and analyze essential financial ratios.</li>
+              <li>Identify financial trends and risks.</li>
+              <li>Benchmark company performance against industry standards.</li>
+              <li>Prepare a concise financial analysis report.</li>
+            </ul>
+            <h4>Target Audience:</h4>
+            <p>
+              Students interested in finance, business, economics, or related
+              fields. Anyone looking to gain practical experience in financial
+              analysis.
+            </p>
+            <h4>Prerequisites:</h4>
+            <p>
+              Basic understanding of business concepts is helpful, but not
+              strictly required. The course modules provide necessary background
+              information.
+            </p>
+          </div>
+          <div data-tab-content="about" class="hidden prose max-w-none">
+            <h2 class="text-xl md:text-2xl font-bold text-primary mb-4">
+              About JobVerse
+            </h2>
+            <p>
+              JobVerse is a platform dedicated to bridging the gap between
+              academic learning and real-world job skills. Our interactive
+              simulations provide hands-on experience, helping students explore
+              careers and prepare for their future majors with confidence.
+            </p>
+            <p>
+              Our mission is to empower learners by providing accessible,
+              practical, and engaging educational tools.
+            </p>
+          </div>
+
+          <div data-tab-content="tasks" class="">
+            <div class="grid grid-cols-12 gap-6 md:gap-10 relative">
+              <aside class="col-span-12 md:col-span-3">
+                <nav id="task-navigation" class="relative">
+                  <ol class="relative z-10">
+                    <li
+                      data-task-id="intro"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Intro & Scenario
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">5 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="1"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Financial Statement Analysis
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">45 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="2"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Financial Ratio Calculation
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">60 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="3"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Trend and Risk Identification
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">40 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="4"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Competitor Benchmarking
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">50 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="5"
+                      class="task-item relative flex items-start pb-8 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Financial Report Preparation
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">75 min</span>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li
+                      data-task-id="finish"
+                      class="task-item relative flex items-start pb-0 group active"
+                    >
+                      <div
+                        class="task-node absolute left-0 top-1 flex items-center justify-center w-7 h-7 rounded-full border-2 bg-background z-10"
+                      ></div>
+                      <div class="task-details ml-10 cursor-pointer">
+                        <h4
+                          class="task-title font-medium text-sm leading-tight"
+                        >
+                          Finish Line
+                        </h4>
+                        <div
+                          class="task-meta flex items-center text-xs text-muted-foreground mt-0.5"
+                        >
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                          <span class="task-time">15 min</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ol>
+                </nav>
+              </aside>
+
+              <div class="col-span-12 md:col-span-9 flex flex-col">
+                <section
+                  id="task-content-area"
+                  class="bg-card-background p-6 md:p-8 rounded-lg shadow border border-card-border min-h-[400px] flex-grow"
+                >
+                  <div id="content-pane">
+                    <h2
+                      id="task-title"
+                      class="text-xl md:text-2xl font-bold text-primary mb-4"
+                    ></h2>
+                    <div
+                      id="task-description"
+                      class="prose max-w-none text-text"
+                    ></div>
+                  </div>
+                </section>
+
+                <div class="mt-6 px-0 hidden" id="task-actions-container">
+                  <div class="flex justify-end">
+                    <button
+                      id="mark-complete-btn"
+                      class="hidden px-5 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md button-hover-effect transition-all duration-300"
+                    >
+                      Mark as Complete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div data-tab-content="reviews" class="hidden prose max-w-none">
+            <h2 class="text-xl md:text-2xl font-bold text-primary mb-4">
+              Course Reviews
+            </h2>
+            <div class="border-b border-border pb-4 mb-4">
+              <div class="flex items-center mb-1">
+                <span class="text-yellow-500">★★★★☆</span>
+                <span class="ml-2 text-sm font-medium text-text">Jane D.</span>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                "A very practical simulation! Helped me understand the
+                day-to-day tasks of an analyst much better than just reading
+                textbooks. The sequential unlocking kept me focused."
+              </p>
+            </div>
+            <div class="border-b border-border pb-4 mb-4">
+              <div class="flex items-center mb-1">
+                <span class="text-yellow-500">★★★★★</span>
+                <span class="ml-2 text-sm font-medium text-text">John S.</span>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                "Excellent course. The final report task really tied everything
+                together. Wish there were more simulations like this! The
+                step-by-step progression felt natural."
+              </p>
+            </div>
+            <p class="text-muted-foreground italic">
+              More reviews will appear here...
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-background border-t border-border mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <nav
+            class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mb-4 md:mb-0"
+            aria-label="Footer navigation"
+          >
+            <a
+              href="index.html#about"
+              class="text-sm text-muted-foreground text-link-hover"
+              >About Us</a
+            >
+            <a
+              href="index.html#contact"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Contact</a
+            >
+            <a
+              href="index.html#testimonials"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Testimonials</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Blog</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >FAQ</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Terms of Service</a
+            >
+          </nav>
+          <a href="index.html" class="text-lg font-bold mb-4 md:mb-0">
+            <span class="text-secondary-gradient">Job</span
+            ><span class="text-verse">Verse</span>
+          </a>
+          <p class="text-sm text-muted-foreground text-center md:text-right">
+            &copy; 2025 JobVerse. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <div
+      id="congrats-popup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden transition-opacity duration-300 ease-out opacity-0"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center transform transition-transform duration-300 ease-out scale-95"
+      >
+        <h2 class="text-2xl font-bold text-primary mb-4">Congratulations!</h2>
+        <p class="text-muted-foreground mb-6">
+          You have successfully completed the Banker Job Simulation. Well done!
+        </p>
+        <button
+          id="close-popup-btn"
+          class="px-5 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md button-hover-effect"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="js/banker-simulation.js" defer></script>
+  </body>
+</html>

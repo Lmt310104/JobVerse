@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banker | JobVerse Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--color-background)",
+              "secondary-background": "var(--color-secondary-background)",
+              "hero-background": "var(--color-hero-background)",
+              text: "var(--color-text)",
+              "muted-foreground": "var(--color-muted-foreground)",
+              primary: "var(--color-primary)",
+              "primary-foreground": "var(--color-primary-foreground)",
+              "secondary-gradient": "var(--color-secondary-gradient)",
+              verse: "var(--color-primary)",
+              border: "var(--color-border)",
+              "card-background": "var(--color-card-background)",
+              "card-border": "var(--color-card-border)",
+              "footer-background": "var(--color-footer-background)",
+              "node-completed-bg": "var(--color-node-completed-bg)",
+              "node-disabled-border": "var(--color-node-disabled-border)",
+              "node-disabled-bg": "var(--color-node-disabled-bg)",
+              "node-disabled-text": "var(--color-node-disabled-text)",
+              "line-completed-color": "var(--color-line-completed-color)",
+              "success-bg": "var(--color-success-bg)",
+              "success-text": "var(--color-success-text)",
+              "success-light-bg": "var(--color-success-light-bg)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .tab-button {
+        border-bottom-width: 2px;
+        transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      }
+      .tab-button:not(.active) {
+        color: var(--color-muted-foreground);
+        border-bottom-color: transparent;
+        font-weight: 500;
+      }
+      .tab-button:not(.active):hover {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-border);
+      }
+      .tab-button.active {
+        border-bottom-color: var(--color-primary);
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="bg-background text-text flex flex-col min-h-screen">
+    <header
+      class="sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm border-b border-border"
+    >
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="text-2xl font-bold">
+              <span class="text-secondary-gradient">Job</span
+              ><span class="text-verse">Verse</span>
+            </a>
+          </div>
+          <div class="hidden md:flex md:items-center md:space-x-6 lg:space-x-8">
+            <a
+              href="#simulations"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Simulations</a
+            >
+            <a
+              href="#testimonials"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Testimonials</a
+            >
+            <a
+              href="contact-us.html"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Contact Us</a
+            >
+            <a
+              href="about-us.html"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >About Us</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-grow">
+      <!-- Mission Section -->
+      <section class="py-12 bg-hero-background text-center">
+        <h1
+          class="text-3xl sm:text-5xl lg:text-5xl font-bold tracking-tight mb-5 leading-normal pb-2"
+        >
+          <span class="gradient-text block">Our Mission</span>
+        </h1>
+
+        <h2 class="text-3xl font-bold text-primary mb-6">
+          Empower Every Student to Explore Upskill, and Thrive in Your Dream
+          Careers
+        </h2>
+
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          At JobVerse, we’re redefining how students prepare for the future.
+          Launched with a passion to break down barriers, we bring the power of
+          job simulations to middle and high school students. Our mission is to
+          pull back the curtain on real-world careers, giving every young
+          dreamer the chance to step into exciting roles, sharpen their skills,
+          and build the confidence to chase amazing futures.
+        </p>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          From coding as a Software Engineer to strategizing as a Marketing
+          Executive, JobVerse offers a universe of hands-on experiences that
+          ignite curiosity and equip students with the tools to succeed. We’re
+          here to ensure that every student can explore their potential, master
+          in-demand skills, and take bold steps toward a career they love—today,
+          tomorrow, and beyond.
+        </p>
+      </section>
+
+      <!-- Positioning Section -->
+      <section class="py-12 bg-secondary-background text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6">Our Positioning</h2>
+        <p class="text-lg text-muted-foreground mb-8">
+          "Empowering the Next Generation with Hands-On Career"
+        </p>
+      </section>
+
+      <!-- What Sets Us Apart? Section -->
+      <section class="py-12 bg-hero-background text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6">
+          What Sets Us Apart?
+        </h2>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Real-World Simulations:</strong> Dive into simplified, guided
+          tasks inspired by actual careers.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Skill-Building That Sticks:</strong> Develop critical
+          thinking, teamwork, and adaptability—skills that matter.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Gamified Fun:</strong> Enjoy the journey with interactive
+          challenges and competitions.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Personalized Growth:</strong> Powered by AI, we tailor
+          experiences to each student’s strengths and dreams.
+        </p>
+
+        <img
+          src="assets/images/ourMission3.jpg"
+          alt="Our Mission"
+          class="mx-auto mt-6 rounded-lg shadow-lg w-1/4"
+        />
+      </section>
+
+      <!-- Why Choose Us Section -->
+      <section class="py-12 bg-secondary-background text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6">
+          Why Choose Us as Your Companion?
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          At JobVerse, students come first—you’re why we’re here. Clear future?
+          Hard to see. That’s why JobVerse fits your world, not the reverse. We
+          get your hustle and dreams, so we built this for you:
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Affordable:</strong> Premium career experiences that won’t
+          empty your wallet—every student deserves a chance.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>Flexible:</strong> No deadlines. Explore jobs on your time,
+          day or night.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mb-6"
+        >
+          <strong>For Everyone:</strong> City or countryside, JobVerse opens
+          doors wherever you are.
+        </p>
+        <p
+          class="text-lg text-muted-foreground mx-auto max-w-xl text-left mt-8"
+        >
+          We’re more than a platform—we’re your career kickstart. With JobVerse,
+          you invest in real skills and confidence to shine. Putting you first
+          means helping you thrive, your way.
+        </p>
+      </section>
+    </main>
+
+    <footer class="bg-background border-t border-border mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <nav
+            class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mb-4 md:mb-0"
+            aria-label="Footer navigation"
+          >
+            <a
+              href="index.html#about"
+              class="text-sm text-muted-foreground text-link-hover"
+              >About Us</a
+            >
+            <a
+              href="index.html#contact"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Contact</a
+            >
+            <a
+              href="index.html#testimonials"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Testimonials</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Blog</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >FAQ</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Terms of Service</a
+            >
+          </nav>
+          <a href="index.html" class="text-lg font-bold mb-4 md:mb-0">
+            <span class="text-secondary-gradient">Job</span
+            ><span class="text-verse">Verse</span>
+          </a>
+          <p class="text-sm text-muted-foreground text-center md:text-right">
+            &copy; 2025 JobVerse. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <div
+      id="congrats-popup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden transition-opacity duration-300 ease-out opacity-0"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center transform transition-transform duration-300 ease-out scale-95"
+      >
+        <h2 class="text-2xl font-bold text-primary mb-4">Congratulations!</h2>
+        <p class="text-muted-foreground mb-6">
+          You have successfully completed the Banker Job Simulation. Well done!
+        </p>
+        <button
+          id="close-popup-btn"
+          class="px-5 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md button-hover-effect"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

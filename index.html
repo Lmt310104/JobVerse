@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobVerse - Career Simulation Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--color-background)",
+              "secondary-background": "var(--color-secondary-background)",
+              "hero-background": "var(--color-hero-background)",
+              text: "var(--color-text)",
+              "muted-foreground": "var(--color-muted-foreground)",
+              primary: "var(--color-primary)",
+              "primary-foreground": "var(--color-primary-foreground)",
+              "secondary-gradient": "var(--color-secondary-gradient)",
+              verse: "var(--color-primary)",
+              border: "var(--color-border)",
+              "card-background": "#FFFFFF",
+              "card-border": "var(--color-card-border)",
+              "footer-background": "var(--color-footer-background)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background text-text">
+    <header
+      class="sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm border-b border-border"
+    >
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="text-2xl font-bold">
+              <span class="text-secondary-gradient">Job</span
+              ><span class="text-verse">Verse</span>
+            </a>
+          </div>
+          <div class="hidden md:flex md:items-center md:space-x-6 lg:space-x-8">
+            <a
+              href="#simulations"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Simulations</a
+            >
+            <a
+              href="#testimonials"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Testimonials</a
+            >
+            <a
+              href="contact-us.html"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Contact Us</a
+            >
+            <a
+              href="about-us.html"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >About Us</a
+            >
+          </div>
+          <div class="flex items-center space-x-3">
+            <a
+              href="#"
+              class="hidden sm:inline-block text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
+              >Log In</a
+            >
+            <a
+              href="#"
+              class="px-5 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md button-hover-effect"
+            >
+              Sign Up
+            </a>
+            <button
+              id="mobile-menu-button"
+              aria-label="Open menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+              class="md:hidden p-2 text-muted-foreground hover:text-primary rounded focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div
+        class="md:hidden hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-sm shadow-md border-t border-border z-40"
+        id="mobile-menu"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#simulations"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >Simulations</a
+          >
+          <a
+            href="#testimonials"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >Testimonials</a
+          >
+          <a
+            href="contact-us.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >Contact Us</a
+          >
+          <a
+            href="about-us.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >About Us</a
+          >
+          <a
+            href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-secondary-background hover:text-primary"
+            >Log In</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="bg-hero-background overflow-hidden">
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32"
+        >
+          <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div
+              class="md:w-3/5 lg:w-3/5 xl:w-2/3 text-center md:text-left animate-on-scroll"
+              data-animation="slide-in-left"
+            >
+              <h1
+                class="text-4xl sm:text-5xl lg:text-5xl font-bold tracking-tight mb-5 leading-normal pb-2"
+              >
+                <span class="gradient-text block"
+                  >Your future starts here.</span
+                >
+                <span class="gradient-text block"
+                  >Your success begins with us.</span
+                >
+              </h1>
+              <p
+                class="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-8"
+              >
+                Unleash potential and explore career paths through immersive job
+                simulations. Build essential skills and gain real-world insights
+                to prepare for a dream major.
+              </p>
+              <div
+                class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 sm:gap-6"
+              >
+                <a
+                  href="#simulations"
+                  class="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-primary-foreground bg-primary rounded-md shadow-lg button-hover-effect"
+                >
+                  Explore Simulations
+                </a>
+                <a
+                  href="#how-it-works"
+                  class="text-base font-medium text-primary text-link-hover"
+                >
+                  See How It Works
+                </a>
+              </div>
+            </div>
+            <div
+              class="md:w-2/5 lg:w-2/5 xl:w-1/3 animate-on-scroll"
+              data-animation="slide-in-right"
+            >
+              <img
+                src="assets/images/hero-background.svg"
+                alt="Illustration of professional skills and career paths"
+                class="w-full h-auto max-w-md mx-auto md:max-w-none rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="data-highlights"
+        class="bg-gradient-to-tr from-primary to-secondary-gradient text-primary-foreground py-20 sm:py-24 animate-on-scroll"
+        data-animation="fade-in"
+      >
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            class="text-3xl sm:text-4xl font-bold text-center mb-12 text-primary-foreground"
+          >
+            Our Journey So Far
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-primary-foreground/30"
+          >
+            <div
+              class="py-8 md:py-0 md:px-6 lg:px-8 flex flex-col items-center text-center"
+            >
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-12 h-12 opacity-90"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                  />
+                </svg>
+              </div>
+              <div class="inline-flex items-baseline mb-1">
+                <span class="text-4xl font-bold count-up" data-target="10000"
+                  >0</span
+                >
+                <span class="text-4xl font-bold ml-1">+</span>
+              </div>
+              <p
+                class="text-sm uppercase tracking-wider text-primary-foreground/80"
+              >
+                Users
+              </p>
+              <p class="text-base mt-1 text-primary-foreground/90">
+                have joined
+              </p>
+            </div>
+            <div
+              class="py-8 md:py-0 md:px-6 lg:px-8 flex flex-col items-center text-center"
+            >
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-12 h-12 opacity-90"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                  />
+                </svg>
+              </div>
+              <div class="text-4xl font-bold mb-1 count-up" data-target="98">
+                0
+              </div>
+              <p
+                class="text-sm uppercase tracking-wider text-primary-foreground/80"
+              >
+                Satisfaction Rate
+              </p>
+              <p class="text-base mt-1 text-primary-foreground/90">
+                with the experience
+              </p>
+            </div>
+            <div
+              class="py-8 md:py-0 md:pl-6 lg:pl-8 flex flex-col items-center text-center"
+            >
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-12 h-12 opacity-90"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                  />
+                </svg>
+              </div>
+              <div class="inline-flex items-baseline">
+                <span class="text-4xl font-bold count-up" data-target="100"
+                  >0</span
+                >
+                <span class="text-4xl font-bold ml-1">+</span>
+              </div>
+              <p
+                class="text-sm uppercase tracking-wider text-primary-foreground/80 mt-1"
+              >
+                Simulations
+              </p>
+              <p class="text-base mt-1 text-primary-foreground/90">
+                across various careers
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="py-16 sm:py-24 bg-secondary-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center">
+            <h2
+              class="text-3xl sm:text-4xl font-bold text-primary mb-4 animate-on-scroll"
+              data-animation="fade-in"
+            >
+              JobVerse: Bridging daily life<br class="hidden md:block" />
+              to dream careers.
+            </h2>
+            <p
+              class="text-lg text-muted-foreground max-w-3xl mx-auto mb-12 md:mb-16 animate-on-scroll"
+              data-animation="fade-in"
+              data-animation-delay="0.1"
+            >
+              Our simulations focus on essential skills through hands-on tasks
+              tailored for students. Gain practical experience, sharpen
+              abilities, and confidently step into a future major.
+            </p>
+          </div>
+          <div
+            class="mt-12 md:mt-16 relative animate-on-scroll"
+            data-animation="fade-in"
+            data-animation-delay="0.2"
+          >
+            <div
+              class="absolute top-5 left-0 right-0 h-0.5 bg-border w-11/12 md:w-4/5 mx-auto z-0"
+              aria-hidden="true"
+            ></div>
+            <div
+              class="relative z-10 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-3 md:grid-cols-5 md:gap-x-8"
+            >
+              <div
+                class="text-center animate-on-scroll sm:col-start-1"
+                data-animation="fade-in"
+                data-animation-delay="0.25"
+              >
+                <div
+                  class="cursor-default w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mx-auto mb-4 shadow-lg border-4 border-secondary-background transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+                >
+                  1
+                </div>
+                <h3 class="font-semibold mb-1 text-base text-text">
+                  Create Profile
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Create a profile and share background details.
+                </p>
+              </div>
+              <div
+                class="text-center animate-on-scroll sm:col-start-2"
+                data-animation="fade-in"
+                data-animation-delay="0.35"
+              >
+                <div
+                  class="cursor-default w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mx-auto mb-4 shadow-lg border-4 border-secondary-background transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+                >
+                  2
+                </div>
+                <h3 class="font-semibold mb-1 text-base text-text">
+                  Build Foundation
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Build a strong foundation for the job simulation.
+                </p>
+              </div>
+              <div
+                class="text-center animate-on-scroll sm:col-start-3 md:col-start-3"
+                data-animation="fade-in"
+                data-animation-delay="0.45"
+              >
+                <div
+                  class="cursor-default w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mx-auto mb-4 shadow-lg border-4 border-secondary-background transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+                >
+                  3
+                </div>
+                <h3 class="font-semibold mb-1 text-base text-text">
+                  Simulate & Sharpen
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Engage in realistic simulations to sharpen skills.
+                </p>
+              </div>
+              <div
+                class="text-center animate-on-scroll sm:col-start-1 md:col-start-4"
+                data-animation="fade-in"
+                data-animation-delay="0.55"
+              >
+                <div
+                  class="cursor-default w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mx-auto mb-4 shadow-lg border-4 border-secondary-background transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+                >
+                  4
+                </div>
+                <h3 class="font-semibold mb-1 text-base text-text">
+                  Get Feedback
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Receive scores and feedback for improvement.
+                </p>
+              </div>
+              <div
+                class="text-center animate-on-scroll sm:col-start-2 md:col-start-5"
+                data-animation="fade-in"
+                data-animation-delay="0.65"
+              >
+                <div
+                  class="cursor-default w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold mx-auto mb-4 shadow-lg border-4 border-secondary-background transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+                >
+                  5
+                </div>
+                <h3 class="font-semibold mb-1 text-base text-text">
+                  Compete & Advance
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Join competitions or continue upskilling.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="text-center mt-16 md:mt-20 animate-on-scroll"
+            data-animation="fade-in"
+            data-animation-delay="0.7"
+          >
+            <a
+              href="#"
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-primary-foreground bg-primary rounded-md shadow-md button-hover-effect group"
+            >
+              How Jobverse works
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 ml-2 transition-transform duration-200 group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="simulations"
+        class="py-16 sm:py-24 bg-background overflow-hidden"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            id="simulations-heading"
+            class="text-3xl sm:text-4xl font-bold text-primary-color text-center mb-12 animate-on-scroll"
+            data-animation="slide-in-bottom"
+            data-animation-duration="0.6"
+          >
+            Explore our free job simulations
+          </h2>
+
+          <div
+            class="relative animate-on-scroll"
+            data-animation="fade-in"
+            data-animation-delay="0.2"
+          >
+            <div
+              class="absolute left-0 top-1/2 -translate-y-1/2 z-20 -ml-4 md:-ml-6 lg:-ml-10"
+            >
+              <button
+                id="sim-scroll-prev"
+                aria-label="Scroll previous simulations"
+                class="button-hover-effect p-2 bg-white border border-gray-300 rounded-full shadow-md text-gray-800 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 19.5 8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div
+              id="simulation-scroll-container"
+              class="overflow-x-auto scrollbar-hide pb-4 -mb-4"
+              role="region"
+              aria-labelledby="simulations-heading"
+            >
+              <div
+                id="simulation-scroll-content"
+                class="flex space-x-6 lg:space-x-8 py-2"
+              >
+                <div
+                  class="simulation-card w-72 md:w-80 flex-shrink-0 bg-card-background rounded-lg shadow-md border border-gray-200 flex flex-col overflow-hidden"
+                  data-animation="slide-in-bottom"
+                  data-animation-delay="0.1"
+                >
+                  <div class="h-40 overflow-hidden">
+                    <img
+                      src="assets/images/banker.jpg"
+                      alt="Banker Job Simulation"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div class="px-5 pb-5 pt-4 flex flex-col flex-grow">
+                    <p class="text-lg font-semibold mb-1 text-primary-color">
+                      Banker
+                    </p>
+                    <p class="text-muted-foreground text-sm mb-3 flex-grow">
+                      Experience the daily tasks of a bank teller...
+                    </p>
+                    <div
+                      class="flex items-center text-sm text-muted-foreground mb-4"
+                    >
+                      <span
+                        class="bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-medium"
+                        >Finance</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center text-xs font-medium text-muted-foreground mt-auto border-t border-border pt-3"
+                    >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        Approx. 4-5 hours</span
+                      >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 6.75A3.75 3.75 0 0 1 6.75 3h10.5A3.75 3.75 0 0 1 21 6.75v10.5A3.75 3.75 0 0 1 17.25 21H6.75A3.75 3.75 0 0 1 3 17.25V6.75ZM16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5-3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                          />
+                        </svg>
+                        Beginner</span
+                      >
+                    </div>
+                    <a
+                      href="banker-simulation.html"
+                      class="mt-4 text-center block w-full bg-primary text-primary-foreground py-2 px-4 rounded-md text-sm font-medium button-hover-effect"
+                      >Start Simulation</a
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="simulation-card w-72 md:w-80 flex-shrink-0 bg-card-background rounded-lg shadow-md border border-gray-200 flex flex-col overflow-hidden"
+                  data-animation="slide-in-bottom"
+                  data-animation-delay="0.2"
+                  title="Coming Soon"
+                >
+                  <div class="h-40 overflow-hidden bg-gray-200">
+                    <img
+                      src="assets/images/lawyer.jpg"
+                      alt="Lawyer Job Simulation"
+                      class="w-full h-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div class="px-5 pb-5 pt-4 flex flex-col flex-grow">
+                    <p class="text-lg font-semibold mb-1 text-gray-500">
+                      Lawyer
+                    </p>
+                    <p class="text-muted-foreground text-sm mb-3 flex-grow">
+                      Analyze case files, prepare legal documents...
+                    </p>
+                    <div
+                      class="flex items-center text-sm text-muted-foreground mb-4"
+                    >
+                      <span
+                        class="bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full font-medium"
+                        >Legal</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center text-xs font-medium text-muted-foreground mt-auto border-t border-border pt-3"
+                    >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        Approx. 6-7 hours</span
+                      >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 6.75A3.75 3.75 0 0 1 6.75 3h10.5A3.75 3.75 0 0 1 21 6.75v10.5A3.75 3.75 0 0 1 17.25 21H6.75A3.75 3.75 0 0 1 3 17.25V6.75ZM16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5-3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                          />
+                        </svg>
+                        Intermediate</span
+                      >
+                    </div>
+                    <button
+                      disabled
+                      class="mt-4 text-center block w-full bg-gray-400 text-gray-600 py-2 px-4 rounded-md text-sm font-medium cursor-not-allowed"
+                    >
+                      Coming Soon
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  class="simulation-card w-72 md:w-80 flex-shrink-0 bg-card-background rounded-lg shadow-md border border-gray-200 flex flex-col overflow-hidden"
+                  data-animation="slide-in-bottom"
+                  data-animation-delay="0.3"
+                  title="Coming Soon"
+                >
+                  <div class="h-40 overflow-hidden bg-gray-200">
+                    <img
+                      src="assets/images/marketer.jpg"
+                      alt="Marketer Job Simulation"
+                      class="w-full h-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div class="px-5 pb-5 pt-4 flex flex-col flex-grow">
+                    <p class="text-lg font-semibold mb-1 text-gray-500">
+                      Marketer
+                    </p>
+                    <p class="text-muted-foreground text-sm mb-3 flex-grow">
+                      Develop marketing campaigns, analyze target audiences...
+                    </p>
+                    <div
+                      class="flex items-center text-sm text-muted-foreground mb-4"
+                    >
+                      <span
+                        class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium"
+                        >Marketing</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center text-xs font-medium text-muted-foreground mt-auto border-t border-border pt-3"
+                    >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        Approx. 5-6 hours</span
+                      >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 6.75A3.75 3.75 0 0 1 6.75 3h10.5A3.75 3.75 0 0 1 21 6.75v10.5A3.75 3.75 0 0 1 17.25 21H6.75A3.75 3.75 0 0 1 3 17.25V6.75ZM16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5-3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                          />
+                        </svg>
+                        Beginner</span
+                      >
+                    </div>
+                    <button
+                      disabled
+                      class="mt-4 text-center block w-full bg-gray-400 text-gray-600 py-2 px-4 rounded-md text-sm font-medium cursor-not-allowed"
+                    >
+                      Coming Soon
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  class="simulation-card w-72 md:w-80 flex-shrink-0 bg-card-background rounded-lg shadow-md border border-gray-200 flex flex-col overflow-hidden"
+                  data-animation="slide-in-bottom"
+                  data-animation-delay="0.4"
+                  title="Coming Soon"
+                >
+                  <div class="h-40 overflow-hidden bg-gray-200">
+                    <img
+                      src="assets/images/dev.jpeg"
+                      alt="Developer Job Simulation"
+                      class="w-full h-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div class="px-5 pb-5 pt-4 flex flex-col flex-grow">
+                    <p class="text-lg font-semibold mb-1 text-gray-500">
+                      Developer
+                    </p>
+                    <p class="text-muted-foreground text-sm mb-3 flex-grow">
+                      Work on coding challenges, debug existing code...
+                    </p>
+                    <div
+                      class="flex items-center text-sm text-muted-foreground mb-4"
+                    >
+                      <span
+                        class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full font-medium"
+                        >Development</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center text-xs font-medium text-muted-foreground mt-auto border-t border-border pt-3"
+                    >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        Approx. 7-8 hours</span
+                      >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 6.75A3.75 3.75 0 0 1 6.75 3h10.5A3.75 3.75 0 0 1 21 6.75v10.5A3.75 3.75 0 0 1 17.25 21H6.75A3.75 3.75 0 0 1 3 17.25V6.75ZM16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5-3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                          />
+                        </svg>
+                        Intermediate</span
+                      >
+                    </div>
+                    <button
+                      disabled
+                      class="mt-4 text-center block w-full bg-gray-400 text-gray-600 py-2 px-4 rounded-md text-sm font-medium cursor-not-allowed"
+                    >
+                      Coming Soon
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  class="simulation-card w-72 md:w-80 flex-shrink-0 bg-card-background rounded-lg shadow-md border border-gray-200 flex flex-col overflow-hidden"
+                  data-animation="slide-in-bottom"
+                  data-animation-delay="0.5"
+                  title="Coming Soon"
+                >
+                  <div class="h-40 overflow-hidden bg-gray-200">
+                    <img
+                      src="assets/images/writer.png"
+                      alt="Writer Job Simulation"
+                      class="w-full h-full object-cover opacity-80"
+                    />
+                  </div>
+                  <div class="px-5 pb-5 pt-4 flex flex-col flex-grow">
+                    <p class="text-lg font-semibold mb-1 text-gray-500">
+                      Writer
+                    </p>
+                    <p class="text-muted-foreground text-sm mb-3 flex-grow">
+                      Craft engaging articles, edit copy, and adapt...
+                    </p>
+                    <div
+                      class="flex items-center text-sm text-muted-foreground mb-4"
+                    >
+                      <span
+                        class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full font-medium"
+                        >Content</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between items-center text-xs font-medium text-muted-foreground mt-auto border-t border-border pt-3"
+                    >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        Approx. 4-6 hours</span
+                      >
+                      <span class="inline-flex items-center"
+                        ><svg
+                          class="h-3.5 w-3.5 mr-1"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 6.75A3.75 3.75 0 0 1 6.75 3h10.5A3.75 3.75 0 0 1 21 6.75v10.5A3.75 3.75 0 0 1 17.25 21H6.75A3.75 3.75 0 0 1 3 17.25V6.75ZM16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm-4.5-3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                          />
+                        </svg>
+                        Beginner</span
+                      >
+                    </div>
+                    <button
+                      disabled
+                      class="mt-4 text-center block w-full bg-gray-400 text-gray-600 py-2 px-4 rounded-md text-sm font-medium cursor-not-allowed"
+                    >
+                      Coming Soon
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="fake-simulation-item w-72 md:w-80 flex-shrink-0 relative"
+                  aria-hidden="true"
+                >
+                  <a
+                    href="#"
+                    id="view-all-sims"
+                    class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-primary text-link-hover whitespace-nowrap"
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="sim-nav-next-container"
+              class="absolute right-0 top-1/2 -translate-y-1/2 z-20 -mr-4 md:-mr-6 lg:-mr-10 flex items-center"
+            >
+              <button
+                id="sim-scroll-next"
+                aria-label="Scroll next simulations"
+                class="button-hover-effect p-2 bg-white border border-gray-300 text-gray-800 hover:bg-primary hover:text-white rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="testimonials"
+        class="py-16 sm:py-24 bg-secondary-background overflow-visible"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-24 md:mb-28">
+            <h2 class="text-3xl sm:text-4xl font-bold text-primary mb-4">
+              Hear from real students.
+            </h2>
+          </div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-20 md:gap-y-0"
+          >
+            <div class="testimonial-wrapper relative">
+              <div class="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
+                <img
+                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+                  src="assets/images/minhanh.jpg"
+                  alt="Nguyen Minh Anh"
+                />
+              </div>
+              <div
+                class="testimonial-card relative flex flex-col bg-card-background rounded-lg shadow-lg text-center h-full overflow-hidden"
+              >
+                <div
+                  class="border-segment border-top absolute top-0 left-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-right absolute top-0 right-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-bottom absolute bottom-0 right-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-left absolute bottom-0 left-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="card-content flex-grow flex flex-col pt-16 px-6 pb-8 relative"
+                >
+                  <header class="mb-4">
+                    <h3 class="font-semibold text-xl text-text">
+                      Nguyen Minh Anh
+                    </h3>
+                    <p class="text-sm text-muted-foreground mt-1">
+                      Admitted to University of Melbourne (Australia)
+                    </p>
+                  </header>
+                  <blockquote
+                    class="text-muted-foreground italic text-base mt-auto"
+                  >
+                    "Jobverse clarified my career path. The 'Marketing
+                    Executive' simulation was eye-opening, sharpening my skills
+                    and passion. Confidently applied for Business and got
+                    accepted!"
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-wrapper relative">
+              <div class="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
+                <img
+                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+                  src="assets/images/hoangnam.jpg"
+                  alt="Tran Hoang Nam"
+                />
+              </div>
+              <div
+                class="testimonial-card relative flex flex-col bg-card-background rounded-lg shadow-lg text-center h-full overflow-hidden"
+              >
+                <div
+                  class="border-segment border-top absolute top-0 left-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-right absolute top-0 right-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-bottom absolute bottom-0 right-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-left absolute bottom-0 left-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="card-content flex-grow flex flex-col pt-16 px-6 pb-8 relative"
+                >
+                  <header class="mb-4">
+                    <h3 class="font-semibold text-xl text-text">
+                      Tran Hoang Nam
+                    </h3>
+                    <p class="text-sm text-muted-foreground mt-1">
+                      Admitted to National University of Singapore (NUS)
+                    </p>
+                  </header>
+                  <blockquote
+                    class="text-muted-foreground italic text-base mt-auto"
+                  >
+                    "The 'Software Engineer' package changed my view on coding.
+                    Building projects and fixing bugs was exciting, thanks to
+                    clear guidance. Now admitted to NUS for Computer Science!"
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-wrapper relative">
+              <div class="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
+                <img
+                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+                  src="assets/images/truongphuc.png"
+                  alt="Pham Thi Linh Chi"
+                />
+              </div>
+              <div
+                class="testimonial-card relative flex flex-col bg-card-background rounded-lg shadow-lg text-center h-full overflow-hidden"
+              >
+                <div
+                  class="border-segment border-top absolute top-0 left-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-right absolute top-0 right-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-bottom absolute bottom-0 right-0 h-[5px] w-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="border-segment border-left absolute bottom-0 left-0 w-[5px] h-0 bg-primary z-[6]"
+                ></div>
+                <div
+                  class="card-content flex-grow flex flex-col pt-16 px-6 pb-8 relative"
+                >
+                  <header class="mb-4">
+                    <h3 class="font-semibold text-xl text-text">
+                      Pham Thi Linh Chi
+                    </h3>
+                    <p class="text-sm text-muted-foreground mt-1">
+                      Admitted to University College London (UCL, UK)
+                    </p>
+                  </header>
+                  <blockquote
+                    class="text-muted-foreground italic text-base mt-auto"
+                  >
+                    "Teamwork in the 'Data Analyst' package was fantastic.
+                    Analyzing data and pitching ideas felt real, boosting my
+                    skills. Inspired me to pursue Economics, now accepted at
+                    UCL!"
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-background border-t border-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <nav
+            class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mb-4 md:mb-0"
+            aria-label="Footer navigation"
+          >
+            <a
+              href="index.html#about"
+              class="text-sm text-muted-foreground text-link-hover"
+              >About Us</a
+            >
+            <a
+              href="index.html#contact"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Contact</a
+            >
+            <a
+              href="index.html#testimonials"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Testimonials</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Blog</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >FAQ</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Terms of Service</a
+            >
+          </nav>
+          <a href="index.html" class="text-lg font-bold mb-4 md:mb-0">
+            <span class="text-secondary-gradient">Job</span
+            ><span class="text-verse">Verse</span>
+          </a>
+          <p class="text-sm text-muted-foreground text-center md:text-right">
+            &copy; 2025 JobVerse. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="js/script.js" defer></script>
+  </body>
+</html>

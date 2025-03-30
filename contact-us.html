@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banker | JobVerse Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Thêm Font Awesome để sử dụng các biểu tượng -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "var(--color-background)",
+              "secondary-background": "var(--color-secondary-background)",
+              "hero-background": "var(--color-hero-background)",
+              text: "var(--color-text)",
+              "muted-foreground": "var(--color-muted-foreground)",
+              primary: "var(--color-primary)",
+              "primary-foreground": "var(--color-primary-foreground)",
+              "secondary-gradient": "var(--color-secondary-gradient)",
+              verse: "var(--color-primary)",
+              border: "var(--color-border)",
+              "card-background": "var(--color-card-background)",
+              "card-border": "var(--color-card-border)",
+              "footer-background": "var(--color-footer-background)",
+              "node-completed-bg": "var(--color-node-completed-bg)",
+              "node-disabled-border": "var(--color-node-disabled-border)",
+              "node-disabled-bg": "var(--color-node-disabled-bg)",
+              "node-disabled-text": "var(--color-node-disabled-text)",
+              "line-completed-color": "var(--color-line-completed-color)",
+              "success-bg": "var(--color-success-bg)",
+              "success-text": "var(--color-success-text)",
+              "success-light-bg": "var(--color-success-light-bg)",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .tab-button {
+        border-bottom-width: 2px;
+        transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      }
+      .tab-button:not(.active) {
+        color: var(--color-muted-foreground);
+        border-bottom-color: transparent;
+        font-weight: 500;
+      }
+      .tab-button:not(.active):hover {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-border);
+      }
+      .tab-button.active {
+        border-bottom-color: var(--color-primary);
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+      .input-focus:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 5px var(--color-primary);
+      }
+      .icon-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 50%;
+        background-color: var(--color-primary);
+        color: white;
+        transition: background-color 0.3s ease;
+      }
+      .icon-button:hover {
+        background-color: var(--color-primary-foreground);
+      }
+      .icon-button i {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body class="bg-background text-text flex flex-col min-h-screen">
+    <header
+      class="sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm border-b border-border"
+    >
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="text-2xl font-bold">
+              <span class="text-secondary-gradient">Job</span
+              ><span class="text-verse">Verse</span>
+            </a>
+          </div>
+          <div class="hidden md:flex md:items-center md:space-x-6 lg:space-x-8">
+            <a
+              href="#simulations"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Simulations</a
+            >
+            <a
+              href="#testimonials"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Testimonials</a
+            >
+            <a
+              href="#contact"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >Contact Us</a
+            >
+            <a
+              href="about-us.html"
+              class="text-muted-foreground text-sm font-medium text-link-hover"
+              >About Us</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <!-- Are you "Future sharpers" -->
+      <div class="pricing-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center items-center"
+        >
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center"
+            style="background-color: #52b5a5"
+          >
+            <div class="card-heading text-xl font-semibold">
+              <strong
+                >Are you
+                <span class="text-secondary-gradient">"Future Sharpers"</span
+                >?</strong
+              >
+            </div>
+
+            <p class="text-lg font-semibold">
+              We’re here to empower you to explore rewarding careers and unlock
+              your full potential
+            </p>
+            <ul class="mt-4 text-sm text-left space-y-2">
+              <li>
+                <i class="fas fa-search text-secondary-gradient mr-2"></i>
+                <strong> Explore with Confidence:</strong> Engage in job
+                simulations to uncover what truly inspires you
+              </li>
+              <li>
+                <i
+                  class="fas fa-graduation-cap text-secondary-gradient mr-2"
+                ></i>
+                <strong>Build Skills Effortlessly:</strong> Foundational courses
+                designed to enhance your abilities with ease and enjoyment
+              </li>
+              <li>
+                <i class="fas fa-robot text-secondary-gradient mr-2"></i>
+                <strong>Personalized Guidance:</strong> AI-driven feedback and
+                tailored challenges to support your growth, your way
+              </li>
+              <li>
+                <i class="fas fa-lightbulb text-secondary-gradient mr-2"></i>
+                <strong>Preview Your Possibilities:</strong> Preview Your
+                Possibilities: Curious about what lies ahead? Our tools
+                transform your “what ifs” into “why nots”
+              </li>
+            </ul>
+          </div>
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center"
+            style="background-color: #52b5a5"
+          >
+            <div class="card-heading text-xl font-semibold">
+              <strong
+                >Are you
+                <span class="text-secondary-gradient"> “Career Pioneers”</span
+                >?</strong
+              >
+            </div>
+
+            <p class="text-lg font-semibold">
+              We’re here to elevate your institution’s career preparation and
+              empower student success
+            </p>
+            <ul class="mt-4 text-sm text-left space-y-2">
+              <li>
+                <i class="fas fa-briefcase text-secondary-gradient mr-2"></i>
+                <strong>Real-World Readiness:</strong> Equip students with job
+                simulations that connect classroom learning to careers
+              </li>
+              <li>
+                <i class="fas fa-cogs text-secondary-gradient mr-2"></i>
+                <strong>Tailored Excellence: </strong> Customized courses and
+                tools to match your curriculum or enhance your global presence
+              </li>
+              <li>
+                <i class="fas fa-chart-line text-secondary-gradient mr-2"></i>
+                <strong>Engaging Insights: </strong>Engaging Insights:
+                AI-supported learning that captivates students, boosting
+                retention and results
+              </li>
+              <li>
+                <i class="fas fa-trophy text-secondary-gradient mr-2"></i>
+                <strong>Distinct Advantage:</strong> A platform that prepares
+                students for their ideal paths and attracts exceptional talent
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Individual Users -->
+      <div
+        class="individual-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+      >
+        <h2 class="text-3xl font-bold text-center mb-8">Individual Users</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center"
+          >
+            <div class="card-heading text-xl font-semibold">Basic</div>
+            <div class="card-price-wrapper mt-4">
+              <div class="card-price-block text-3xl font-bold">
+                <span class="card-price-currency">$</span>39<span
+                  class="text-lg"
+                  >/Year</span
+                >
+              </div>
+              <button
+                class="bg-primary text-white px-6 py-2 mt-6 rounded-lg hover:bg-primary-foreground font-semibold shadow-md"
+              >
+                Get Started
+              </button>
+            </div>
+            <ul class="mt-4 text-sm text-muted-foreground text-left space-y-2">
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> Access
+                to 5 foundational career courses
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 4 job
+                simulations/month
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                Management dashboard & reporting
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 2
+                tickets/month for challenges
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center"
+          >
+            <div class="card-heading text-xl font-semibold">Standard</div>
+            <div class="card-price-wrapper mt-4">
+              <div class="card-price-block text-3xl font-bold">
+                <span class="card-price-currency">$</span>99<span
+                  class="text-lg"
+                  >/Year</span
+                >
+              </div>
+              <button
+                class="bg-primary text-white px-6 py-2 mt-6 rounded-lg hover:bg-primary-foreground font-semibold shadow-md"
+              >
+                Get Started
+              </button>
+            </div>
+            <ul class="mt-4 text-sm text-muted-foreground text-left space-y-2">
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> Access
+                to 10+ foundational career courses
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 8 job
+                simulations/month
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 4
+                tickets/month for challenges
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                AI-driven feedback on simulations
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                Downloadable mini-certificates
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center"
+          >
+            <div class="card-heading text-xl font-semibold">Premium</div>
+            <div class="card-price-wrapper mt-4">
+              <div class="card-price-block text-3xl font-bold">
+                <span class="card-price-currency">$</span>199<span
+                  class="text-lg"
+                  >/Year</span
+                >
+              </div>
+              <button
+                class="bg-primary text-white px-6 py-2 mt-6 rounded-lg hover:bg-primary-foreground font-semibold shadow-md"
+              >
+                Get Started
+              </button>
+            </div>
+            <ul class="mt-4 text-sm text-muted-foreground text-left space-y-2">
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> Access
+                to all career courses
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                Unlimited job simulations
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 8
+                tickets/month for challenges
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> 2 expert
+                feedback tickets/month
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                Downloadable mini-certificates
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Educational Partners -->
+      <div
+        class="partners-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+      >
+        <h2 class="text-3xl font-bold text-center mb-8">
+          Educational Partners
+        </h2>
+        <div class="flex justify-center">
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center w-full md:w-2/3 lg:w-1/2"
+          >
+            <div class="card-heading text-xl font-semibold">
+              Custom Solutions for Schools & Universities
+            </div>
+            <ul class="mt-4 text-sm text-muted-foreground text-left space-y-2">
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                Integrate JobVerse into your curriculum or branding strategy
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> Equip
+                students with real-world skills and simulations
+              </li>
+              <li>
+                <i class="fas fa-check-circle text-green-500 mr-2"></i> Flexible
+                pricing based on student volume and needs
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ" -->
+
+      <div class="faq-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Contact us</h2>
+        <div class="flex justify-center">
+          <div
+            class="card-content border border-border rounded-lg p-6 text-center w-full md:w-2/3 lg:w-1/2"
+          >
+            <p class="mb-6">
+              We'd love to hear from you! Please fill out the form below
+            </p>
+
+            <div class="flex flex-col items-center w-full">
+              <form class="space-y-4 w-full max-w-md">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                />
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                />
+                <textarea
+                  placeholder="Your Message"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                ></textarea>
+                <button
+                  type="submit"
+                  class="w-full bg-primary text-white py-3 rounded-lg hover:bg-teal-600 transition"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+
+            <p class="mt-6">
+              You can also reach us through the following channels
+            </p>
+            <div class="flex justify-center space-x-6 mt-4">
+              <a
+                href="#"
+                class="bg-primary hover:bg-teal-600 text-white rounded-full p-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M22 12c0-5.522-4.478-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.88V15.47h-2.54v-3.47h2.54V9.845c0-2.506 1.493-3.89 3.776-3.89 1.096 0 2.242.195 2.242.195v2.47H15.88c-1.4 0-1.836.87-1.836 1.76v2.115h3.12l-.498 3.47h-2.622V21.88C18.343 21.128 22 16.991 22 12z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="bg-primary hover:bg-teal-600 text-white rounded-full p-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23.643 4.937c-.835.37-1.73.62-2.663.733a4.702 4.702 0 002.053-2.588 9.301 9.301 0 01-2.954 1.128A4.635 4.635 0 0016.616 3c-2.568 0-4.647 2.078-4.647 4.642 0 .366.042.723.123 1.065-3.861-.19-7.286-2.04-9.575-4.843a4.59 4.59 0 00-.627 2.336c0 1.609.818 3.029 2.06 3.864a4.62 4.62 0 01-2.105-.58v.058c0 2.249 1.603 4.125 3.733 4.551a4.74 4.74 0 01-2.098.08c.592 1.84 2.306 3.18 4.343 3.22A9.34 9.34 0 010 20.356a13.16 13.16 0 007.16 2.099c8.594 0 13.3-7.105 13.3-13.268 0-.202-.004-.404-.013-.605a9.306 9.306 0 002.296-2.38z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="bg-primary hover:bg-teal-600 text-white rounded-full p-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm-2.75 18.75h5.5V9.5h-5.5v12.75zM9.5 9.5v12.75h5.5v-6.88c0-3.84-4.5-3.55-4.5 0v6.88h5.5V9.5h-5.5z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="bg-primary hover:bg-teal-600 text-white rounded-full p-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M7.75 2h8.5C19.55 2 22 4.45 22 7.75v8.5c0 3.3-2.45 5.75-5.75 5.75h-8.5C4.45 22 2 19.55 2 16.25v-8.5C2 4.45 4.45 2 7.75 2zm4.25 5a5 5 0 100 10 5 5 0 000-10zm0 8.25a3.25 3.25 0 110-6.5 3.25 3.25 0 010 6.5zM18.25 6.5a1.25 1.25 0 11-2.5 0 1.25 1.25 0 012.5 0z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-background border-t border-border mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <nav
+            class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mb-4 md:mb-0"
+            aria-label="Footer navigation"
+          >
+            <a
+              href="index.html#about"
+              class="text-sm text-muted-foreground text-link-hover"
+              >About Us</a
+            >
+            <a
+              href="index.html#contact"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Contact</a
+            >
+            <a
+              href="index.html#testimonials"
+              class="text-sm text-muted-foreground text-link-hover"
+              >Testimonials</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Blog</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >FAQ</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-sm text-muted-foreground text-link-hover"
+              >Terms of Service</a
+            >
+          </nav>
+          <a href="index.html" class="text-lg font-bold mb-4 md:mb-0">
+            <span class="text-secondary-gradient">Job</span
+            ><span class="text-verse">Verse</span>
+          </a>
+          <p class="text-sm text-muted-foreground text-center md:text-right">
+            &copy; 2025 JobVerse. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
